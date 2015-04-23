@@ -11,10 +11,10 @@
         "DISK_WRITES_TOTAL",
         "DISK_READ_BYTES_TOTAL",
         "DISK_WRITE_BYTES_TOTAL",
-        "DISK_READS_SUMMARY",
-        "DISK_WRITES_SUMMARY",
-        "DISK_READ_BYTES_SUMMARY",
-        "DISK_WRITE_BYTES_SUMMARY"
+        "DISK_READS",
+        "DISK_WRITES",
+        "DISK_READ_BYTES",
+        "DISK_WRITE_BYTES"
     ],
     "paramArray" : { "itemTitle" : ["source"], "schemaTitle" : "Endpoint"},
     "paramSchema" : [

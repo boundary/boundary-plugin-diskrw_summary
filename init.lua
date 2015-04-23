@@ -68,7 +68,7 @@ function meterPlugin:onParseValues(data)
           end
         end
         if capture_metric == 1 then
-          metric.metric = "DISK_"..string.upper(type).."_SUMMARY"
+          metric.metric = "DISK_"..string.upper(type)
           metric.source = '"'..sourcename..'"'
           metric.value = parsed.result.query_metric[i+1]
           table.insert(result, metric)
