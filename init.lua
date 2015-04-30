@@ -8,11 +8,10 @@ local stringutil = framework.string
 local Plugin = framework.Plugin
 local NetDataSource = framework.NetDataSource
 local net = require('net')
-require('fun')(true) -- Shows a warn when overriding an existing function.
 
 local items = {}
 
-local params = framework.boundary.param
+local params = framework.params
 params.name = 'Boundary Disk Use Summary'
 params.version = '2.0'
 
