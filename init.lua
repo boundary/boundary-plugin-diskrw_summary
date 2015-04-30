@@ -33,16 +33,16 @@ function meterPlugin:onParseValues(data)
   if table.getn(parsed.result.query_metric) > 0 then
     for i = 1, table.getn(parsed.result.query_metric), 3 do
 
-      local metric = {}
       local typestart, typeend = string.find(parsed.result.query_metric[i], "system.disk.")
       typestart = typeend+1
       typeend = string.find(parsed.result.query_metric[i], "%.", typestart) or string.find(parsed.result.query_metric[i], "|", typestart)
       local type = string.sub(parsed.result.query_metric[i], typestart, typeend-1)
       if string.sub(parsed.result.query_metric[i], typeend+1) == "total" then
-        metric.metric = "TOTAL_DISK_"..string.upper(type)
-        metric.source = meterPlugin.source
-        metric.value = parsed.result.query_metric[i+1]
-        table.insert(result, metric)
+	local metric = "TOTAL_DISK_"..string.upper(type)
+        local value = {}
+        value['source'] = meterPlugin.source
+        value['value'] = parsed.result.query_metric[i+1]
+	result[metric] = value
       else
         local dirname = stringutil.urldecode(string.sub(parsed.result.query_metric[i], string.find(parsed.result.query_metric[i], "dir=")+4, string.find(parsed.result.query_metric[i], "&")-1))
         local devname = stringutil.urldecode(string.sub(parsed.result.query_metric[i], string.find(parsed.result.query_metric[i], "dev=")+4, -1))
@@ -68,10 +68,11 @@ function meterPlugin:onParseValues(data)
           end
         end
         if capture_metric == 1 then
-          metric.metric = "DISK_"..string.upper(type)
-          metric.source = '"'..sourcename..'"'
-          metric.value = parsed.result.query_metric[i+1]
-          table.insert(result, metric)
+          local metric = "DISK_"..string.upper(type)
+          local value = {}
+          value['source'] = '"'..sourcename..'"'
+          value['value'] = parsed.result.query_metric[i+1]
+	  result[metric] = value
         end
       end
     end

@@ -11,5 +11,5 @@
          "device" : "/dev/devfs"
       }
    ],
-   "pollInterval": 3000
+   "pollInterval": 1000
 }
