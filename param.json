@@ -3,7 +3,7 @@
       {
          "diskname" : "root",
          "dir": "/",
-         "device" : "/dev/disk1"
+         "device" : "/dev/sda1"
       },
       {
          "diskname" : "temp",
