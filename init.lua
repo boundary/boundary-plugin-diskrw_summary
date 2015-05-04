@@ -41,6 +41,7 @@ function meterPlugin:onParseValues(data)
         local value = {}
         value['source'] = meterPlugin.source
         value['value'] = parsed.result.query_metric[i+1]
+        value['timestamp'] = parsed.result.query_metric[i+2]
 	result[metric] = value
       else
         local dirname = stringutil.urldecode(string.sub(parsed.result.query_metric[i], string.find(parsed.result.query_metric[i], "dir=")+4, string.find(parsed.result.query_metric[i], "&")-1))
@@ -50,18 +51,18 @@ function meterPlugin:onParseValues(data)
 
         for _, item in ipairs(items) do
           if item.dir  then
-            if (item.dir == dirname) then
+            if string.find(dirname, item.dir) then
               if item.device then
-                if (item.device == devname) then
+                if string.find(devname, item.device) then
                   capture_metric = 1
-                  sourcename = sourcename..(item.diskname or dirname.."."..devname)
+                  sourcename = sourcename .. (item.diskname or (dirname .. "." .. devname))
                 end
               else
                 capture_metric = 1
                 sourcename = sourcename..(item.diskname or dirname.."."..devname)
               end
             end
-          elseif item.device and (item.device == devname) then
+          elseif item.device and string.find(devname, item.device) then
             capture_metric = 1
             sourcename = sourcename..(item.diskname or dirname.."."..devname)
           end
@@ -69,8 +70,9 @@ function meterPlugin:onParseValues(data)
         if capture_metric == 1 then
           local metric = "DISK_"..string.upper(type)
           local value = {}
-          value['source'] = '"'..sourcename..'"'
+          value['source'] = string.gsub(sourcename, "([!@#$%%^&*() {}<>/\\|]", "-")
           value['value'] = parsed.result.query_metric[i+1]
+          value['timestamp'] = parsed.result.query_metric[i+2]
 	  result[metric] = value
         end
       end
