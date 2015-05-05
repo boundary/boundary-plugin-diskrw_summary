@@ -117,7 +117,6 @@ function Emitter:propagate(eventName, target)
     self:on(eventName, function (...) target:emit(eventName, ...) end)
     return target
   end
-
   return self
 end
 
