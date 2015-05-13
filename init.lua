@@ -1,7 +1,6 @@
 local framework = require('framework.lua')
 local Plugin = framework.Plugin
 local MeterDataSource = framework.MeterDataSource
-local stringutil = framework.string
 local isEmpty = framework.string.isEmpty
 local urldecode = framework.string.urldecode
 local params = framework.params
