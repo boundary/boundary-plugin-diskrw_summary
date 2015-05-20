@@ -1,86 +1,56 @@
-local json = require('json')
 local framework = require('framework.lua')
-framework.table()
-framework.util()
-framework.functional()
-local stringutil = framework.string
-
 local Plugin = framework.Plugin
-local NetDataSource = framework.NetDataSource
-local net = require('net')
-
-local items = {}
-
+local MeterDataSource = framework.MeterDataSource
+local isEmpty = framework.string.isEmpty
+local urldecode = framework.string.urldecode
 local params = framework.params
 params.name = 'Boundary Disk Use Summary'
-params.version = '2.0'
+params.version = '2.2'
 
-items = params.items or items
+params.items = params.items or {}
 
-local meterDataSource = NetDataSource:new('127.0.0.1', '9192')
-
+local meterDataSource = MeterDataSource:new()
 function meterDataSource:onFetch(socket)
-	socket:write('{"jsonrpc":"2.0","method":"query_metric","id":1,"params":{"match":"system.disk"}}\n')
+  socket:write(self:queryMetricCommand({match = "system.disk" }))
 end
 
 local meterPlugin = Plugin:new(params, meterDataSource)
 
+local metric_mapping = {
+  ['system.disk.reads.total'] = 'TOTAL_DISK_READS',
+  ['system.disk.reads'] = 'DISK_READS',
+  ['system.disk.read_bytes.total'] = 'TOTAL_DISK_READ_BYTES',
+  ['system.disk.read_bytes'] = 'DISK_READ_BYTES',
+  ['system.disk.writes.total'] = 'TOTAL_DISK_WRITES',
+  ['system.disk.writes'] = 'DISK_WRITES',
+  ['system.disk.write_bytes.total'] = 'TOTAL_DISK_WRITE_BYTES',
+  ['system.disk.write_bytes'] = 'DISK_WRITE_BYTES',
+  ['system.disk.ios'] = 'DISK_IOS'
+}
+
 function meterPlugin:onParseValues(data)
-	
   local result = {}
-  local parsed = json.parse(data)
-  if table.getn(parsed.result.query_metric) > 0 then
-    for i = 1, table.getn(parsed.result.query_metric), 3 do
-
-      local typestart, typeend = string.find(parsed.result.query_metric[i], "system.disk.")
-      typestart = typeend+1
-      typeend = string.find(parsed.result.query_metric[i], "%.", typestart) or string.find(parsed.result.query_metric[i], "|", typestart)
-      local type = string.sub(parsed.result.query_metric[i], typestart, typeend-1)
-      if string.sub(parsed.result.query_metric[i], typeend+1) == "total" then
-	local metric = "TOTAL_DISK_"..string.upper(type)
-        local value = {}
-        value['source'] = meterPlugin.source
-        value['value'] = parsed.result.query_metric[i+1]
-        value['timestamp'] = parsed.result.query_metric[i+2]
-	result[metric] = value
-      else
-        local dirname = stringutil.urldecode(string.sub(parsed.result.query_metric[i], string.find(parsed.result.query_metric[i], "dir=")+4, string.find(parsed.result.query_metric[i], "&")-1))
-        local devname = stringutil.urldecode(string.sub(parsed.result.query_metric[i], string.find(parsed.result.query_metric[i], "dev=")+4, -1))
-        local sourcename=meterPlugin.source.."."
-        local capture_metric = 0
-
-        for _, item in ipairs(items) do
-          if item.dir  then
-            if string.find(dirname, item.dir) then
-              if item.device then
-                if string.find(devname, item.device) then
-                  capture_metric = 1
-                  sourcename = sourcename .. (item.diskname or (dirname .. "." .. devname))
-                end
-              else
-                capture_metric = 1
-                sourcename = sourcename..(item.diskname or dirname.."."..devname)
-              end
-            end
-          elseif item.device and string.find(devname, item.device) then
-            capture_metric = 1
-            sourcename = sourcename..(item.diskname or dirname.."."..devname)
-          end
-        end
-        if capture_metric == 1 then
-          local metric = "DISK_"..string.upper(type)
-          local value = {}
-          value['source'] = string.gsub(sourcename, "([!@#$%%^&*() {}<>/\\|]", "-")
-          value['value'] = parsed.result.query_metric[i+1]
-          value['timestamp'] = parsed.result.query_metric[i+2]
-	  result[metric] = value
+  for i, v in ipairs(data) do
+    local metric, rest = string.match(v.metric, '(system%.disk%.[^|]+)|?(.*)')
+    local source = self.source 
+    local boundary_metric = metric_mapping[metric]
+    if string.find(metric, 'total') then
+      result[boundary_metric] = { value = v.value, source = source }
+    elseif not isEmpty(rest) then
+      local dir, dev = string.match(rest, '^dir=(.+)&dev=(.+)')
+      dir = urldecode(dir)
+      dev = urldecode(dev)
+      for _, item in ipairs(params.items) do
+        if (item.dir == dir and item.device == dev) or (item.dir and not item.device and item.dir == dir) or (not item.dir and item.device and item.device == dev) then
+          source = self.source .. '.' .. (item.diskname or dir .. '.' .. dev) 
+          source = string.gsub(source, "([!@#$%%^&*() {}<>/\\|]", "-")
+          result[boundary_metric] = { value = v.value, source = source }
+          break
         end
       end
     end
   end
-
-  return result	
-
-end
+  return result
+end	
 
 meterPlugin:run()
