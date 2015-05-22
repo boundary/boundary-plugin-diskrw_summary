@@ -23,12 +23,12 @@
 	    "title" : "Disk Name",
 	    "name" : "diskname",
 	    "description" : "The name of the disk to be appended to the hostname to display in the legend for the Disk Use Summary data.",
-	    "type" : "string"
+	    "type" : "string",
 	    "required" : "true"
 	},
     	{
 	    "title" : "Mount Point",
-            "name" : "dir"
+            "name" : "dir",
 	    "description" : "The mounted point to check for free space. (either this or the Mounted device need to be set for the plugin to function properly)",
 	    "type" : "string",
 	    "required" : "false"
