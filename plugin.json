@@ -14,7 +14,7 @@
         "DISK_READS",
         "DISK_WRITES",
         "DISK_READ_BYTES",
-        "DISK_WRITE_BYTES"
+        "DISK_WRITE_BYTES",
         "DISK_IOS",
     ],
     "paramArray" : { "itemTitle" : ["source"], "schemaTitle" : "Endpoint"},
