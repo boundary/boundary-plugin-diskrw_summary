@@ -23,7 +23,7 @@
            "layout" : "d-w=3&d-h=3&d-pad=5&d-bg=none&d-g-DISK_READS_TOTAL=0-0-1-1&d-g-DISK_WRITES_TOTAL=1-0-1-1&d-g-DISK_IOS=2-0-1-1&d-g-DISK_READ_BYTES_TOTAL=0-1-1-1&d-g-DISK_WRITE_BYTES_TOTAL=1-1-1-1&d-g-DISK_READS=2-1-1-1&d-g-DISK_WRITES=0-2-1-1&d-g-DISK_READ_BYTES=1-2-1-1&d-g-DISK_WRITE_BYTES=2-2-1-1"
         }
     ],
-    "paramArray" : { "itemTitle" : ["source"], "schemaTitle" : "Endpoint"},
+    "paramArray" : { "itemTitle" : ["diskname"], "schemaTitle" : "Endpoint"},
     "paramSchema" : [
 	{
 	    "title" : "Disk Name",
