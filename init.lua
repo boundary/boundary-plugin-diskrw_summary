@@ -17,13 +17,13 @@ end
 local meterPlugin = Plugin:new(params, meterDataSource)
 
 local metric_mapping = {
-  ['system.disk.reads.total'] = 'TOTAL_DISK_READS',
+  ['system.disk.reads.total'] = 'DISK_READS_TOTAL',
   ['system.disk.reads'] = 'DISK_READS',
-  ['system.disk.read_bytes.total'] = 'TOTAL_DISK_READ_BYTES',
+  ['system.disk.read_bytes.total'] = 'DISK_READ_BYTES_TOTAL',
   ['system.disk.read_bytes'] = 'DISK_READ_BYTES',
-  ['system.disk.writes.total'] = 'TOTAL_DISK_WRITES',
+  ['system.disk.writes.total'] = 'DISK_WRITES_TOTAL',
   ['system.disk.writes'] = 'DISK_WRITES',
-  ['system.disk.write_bytes.total'] = 'TOTAL_DISK_WRITE_BYTES',
+  ['system.disk.write_bytes.total'] = 'DISK_WRITE_BYTES_TOTAL',
   ['system.disk.write_bytes'] = 'DISK_WRITE_BYTES',
   ['system.disk.ios'] = 'DISK_IOS'
 }
