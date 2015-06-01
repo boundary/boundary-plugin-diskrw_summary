@@ -20,10 +20,10 @@
     "dashboards" : [ 
         {
            "name" : "Disk Read/Write Summary",
-           "layout" : "d-w=3&d-h=3&d-pad=5&d-bg=none&d-g-DISK_READS_TOTAL=0-0-1-1&d-g-DISK_WRITES_TOTAL=1-0-1-1&d-g-DISK_IOS=2-0-1-1&d-g-DISK_READ_BYTES_TOTAL=0-1-1-1&d-g-DISK_WRITE_BYTES_TOTAL=1-1-1-1&d-g-DISK_READS=2-1-1-1&d-g-DISK_WRITES=0-2-1-1&d-g-DISK_READ_BYTES=1-2-1-1&d-g-DISK_WRITE_BYTES=2-2-1-1"
+ _          "layout" : "d-w=2&d-h=3&d-pad=5&d-bg=none&d-g-DISK_READ_BYTES_TOTAL=0-1-1-1-t&d-g-DISK_WRITE_BYTES_TOTAL=0-1-1-1-b&d-g-DISK_READS_TOTAL=0-0-1-1-t&d-g-DISK_WRITES_TOTAL=0-0-1-1-b&d-g-DISK_IOS=0-2-1-1&d-sg-hdr=1-0-1-1-t&d-sg-hdw=1-0-1-1-b&d-g-DISK_READ_BYTES=1-1-1-1-t&d-g-DISK_WRITE_BYTES=1-1-1-1-b"
         }
     ],
-    "paramArray" : { "itemTitle" : ["diskname"], "schemaTitle" : "Endpoint"},
+    "paramArray" : { "itemTitle" : ["diskname", "dir", "device"], "schemaTitle" : "Endpoint"},
     "paramSchema" : [
 	{
 	    "title" : "Disk Name",
