@@ -41,7 +41,7 @@ function meterPlugin:onParseValues(data)
       dir = urldecode(dir)
       dev = urldecode(dev)
       for _, item in ipairs(params.items) do
-        if (item.dir == dir and item.device == dev) or (item.dir and not item.device and item.dir == dir) or (not item.dir and item.device and item.device == dev) then
+        if (item.dir == dir and item.device == dev) or (item.dir and (not item.device or item.device == "") and item.dir == dir) or ((not item.dir or item.dir == "") and item.device and item.device == dev) then
           source = self.source .. '.' .. (item.diskname or dir .. '.' .. dev) 
           source = string.gsub(source, "([!@#$%%^&*() {}<>/\\|]", "-")
           result[boundary_metric] = { value = v.value, source = source }
