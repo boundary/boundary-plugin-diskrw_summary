@@ -1,15 +1,13 @@
 {
-   "items": [
-      {
-         "diskname" : "root",
-         "dir": "/",
-         "device" : "/dev/sda1"
-      },
-      {
-         "diskname" : "temp",
-         "dir": "/tmp",
-         "device" : "/dev/devfs"
-      }
-   ],
-   "pollInterval": 1000
+  "items": [
+    {
+      "diskname": "root",
+      "dir": "/"
+    },
+    {
+      "diskname": "temp",
+      "dir": "/tmp"
+    }
+  ],
+  "pollInterval": 1000
 }

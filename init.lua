@@ -4,8 +4,6 @@ local MeterDataSource = framework.MeterDataSource
 local isEmpty = framework.string.isEmpty
 local urldecode = framework.string.urldecode
 local params = framework.params
-params.name = 'Boundary Disk Use Summary'
-params.version = '2.2'
 
 params.items = params.items or {}
 
