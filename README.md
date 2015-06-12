@@ -32,5 +32,20 @@ None
 
 |Metric Name            |Description               |
 |:----------------------|:-------------------------|
-|Disk Read/Write Summary|The percentage of disk used for the given mounted disk|
+|Total Disk Reads|The total number of disk reads at the moment|
+|Total Disk Read Bytes|The total number of bytes read from disks at the moment|
+|Total Disk Writes|The total number of disk writes at the moment|
+|Total Disk Write Bytes|The total number of bytes written to disks at the moment|
+|Disk Reads|The number of reads from the disk at the moment|
+|Disk Read Bytes|The number of bytes read from the disk at the moment|
+|Disk Writes|The number of writes to the disk at the moment|
+|Disk Write Bytes|The number of bytes written to the disk at the moment|
+|Disk IOs|The number of IO per second to the disk at the moment|
 
+### Dashboards
+
+Disk Read/Write Summary
+
+### References
+
+None
