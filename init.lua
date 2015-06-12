@@ -4,15 +4,16 @@ local MeterDataSource = framework.MeterDataSource
 local isEmpty = framework.string.isEmpty
 local urldecode = framework.string.urldecode
 local params = framework.params
+local pack = framework.util.pack
 
 params.items = params.items or {}
 
-local meterDataSource = MeterDataSource:new()
-function meterDataSource:onFetch(socket)
+local ds = MeterDataSource:new()
+function ds:onFetch(socket)
   socket:write(self:queryMetricCommand({match = "system.disk" }))
 end
 
-local meterPlugin = Plugin:new(params, meterDataSource)
+local plugin = Plugin:new(params, ds)
 
 local metric_mapping = {
   ['system.disk.reads.total'] = 'DISK_READS_TOTAL',
@@ -26,7 +27,7 @@ local metric_mapping = {
   ['system.disk.ios'] = 'DISK_IOS'
 }
 
-function meterPlugin:onParseValues(data)
+function plugin:onParseValues(data)
   local result = {}
   for i, v in ipairs(data) do
     local metric, rest = string.match(v.metric, '(system%.disk%.[^|]+)|?(.*)')
@@ -42,7 +43,7 @@ function meterPlugin:onParseValues(data)
         if (item.dir == dir and item.device == dev) or (item.dir and (not item.device or item.device == "") and item.dir == dir) or ((not item.dir or item.dir == "") and item.device and item.device == dev) then
           source = self.source .. '.' .. (item.diskname or dir .. '.' .. dev) 
           source = string.gsub(source, "([!@#$%%^&*() {}<>/\\|]", "-")
-          result[boundary_metric] = { value = v.value, source = source }
+          table.insert(result, pack(boundary_metric, v.value, v.timestamp, source))
           break
         end
       end
@@ -51,4 +52,4 @@ function meterPlugin:onParseValues(data)
   return result
 end	
 
-meterPlugin:run()
+plugin:run()
