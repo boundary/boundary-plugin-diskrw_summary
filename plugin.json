@@ -1,6 +1,6 @@
 {
   "name" : "Boundary Disk Use Summary",
-  "version" : "0.9.0",
+  "version" : "0.9.1",
   "meterVersionRequired" : "4.2.0-611",
   "os" : [ "Linux", "Windows", "SmartOS", "OS X" ], 
   "tags" : "disk,meter",

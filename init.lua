@@ -31,18 +31,16 @@ function plugin:onParseValues(data)
   local result = {}
   for i, v in ipairs(data) do
     local metric, rest = string.match(v.metric, '(system%.disk%.[^|]+)|?(.*)')
-    local source = self.source 
     local boundary_metric = metric_mapping[metric]
     if string.find(metric, 'total') then
-      result[boundary_metric] = { value = v.value, source = source }
+      result[boundary_metric] = { value = v.value, timestamp = v.timestamp }
     elseif not isEmpty(rest) then
       local dir, dev = string.match(rest, '^dir=(.+)&dev=(.+)')
       dir = urldecode(dir)
       dev = urldecode(dev)
       for _, item in ipairs(params.items) do
         if (item.dir == dir and item.device == dev) or (item.dir and (not item.device or item.device == "") and item.dir == dir) or ((not item.dir or item.dir == "") and item.device and item.device == dev) then
-          source = self.source .. '.' .. (item.diskname or dir .. '.' .. dev) 
-          source = string.gsub(source, "([!@#$%%^&*() {}<>/\\|]", "-")
+          local source = self.source .. '.' .. (item.diskname or dir .. '.' .. dev) 
           table.insert(result, pack(boundary_metric, v.value, v.timestamp, source))
           break
         end
