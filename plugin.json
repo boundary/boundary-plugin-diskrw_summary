@@ -2,7 +2,7 @@
   "name" : "Boundary Disk Use Summary",
   "version" : "0.9.1",
   "meterVersionRequired" : "4.2.0-611",
-  "os" : [ "Linux", "Windows", "SmartOS", "OS X" ], 
+  "unsupportedPlatforms" : [ ],
   "tags" : "disk,meter",
   "description" : "Scans the given device mount paths and reports the percent of disk used",
   "icon" : "icon.png",
